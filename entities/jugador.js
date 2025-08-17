@@ -88,7 +88,7 @@ export class Jugador {
 
   // Comportamiento
   initAI(pelota) {
-    this.fsm = new FSM("idle");
+    this.fsm = new FSM("chase");
 
     this.fsm.addState("idle", () => {
       this.brake();
