@@ -1,4 +1,5 @@
 import Matter from "matter-js";
+import { FSM } from "../core/fsm.js";
 
 export class Jugador {
   constructor(x, y, radius, angle, color) {
@@ -79,6 +80,50 @@ export class Jugador {
     if (this.speed > 0) {
       this.speed = Math.max(this.speed - 0.005, 0);
       this.applyMovement();
+    }
+  }
+
+  // Comportamiento
+  initAI(pelota) {
+    this.fsm = new FSM("idle");
+
+    // Estados básicos
+    this.fsm.addState("idle", () => {
+      this.applyFriction();
+    });
+
+    this.fsm.addState("chaseBall", () => {
+      // Comportamiento temporal (lo mejoraremos)
+      const ballDirection = Math.atan2(
+        pelota.body.position.y - this.body.position.y,
+        pelota.body.position.x - this.body.position.x
+      );
+      const angleDiff = this.normalizeAngle(ballDirection - this.body.angle);
+
+      if (angleDiff > 0.1) this.turnRight();
+      else if (angleDiff < -0.1) this.turnLeft();
+      else this.accelerate();
+    });
+
+    // Transiciones básicas
+    this.fsm.addTransition("idle", "chaseBall", () => {
+      return Matter.Vector.magnitude(pelota.body.velocity) > 0.5;
+    });
+
+    this.fsm.addTransition("chaseBall", "idle", () => {
+      return Matter.Vector.magnitude(pelota.body.velocity) < 0.3;
+    });
+  }
+
+  normalizeAngle(angle) {
+    while (angle > Math.PI) angle -= 2 * Math.PI;
+    while (angle < -Math.PI) angle += 2 * Math.PI;
+    return angle;
+  }
+
+  updateAI() {
+    if (this.fsm) {
+      this.fsm.update();
     }
   }
 }
