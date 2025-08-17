@@ -13,6 +13,9 @@ export class Pelota {
       render: {
         fillStyle: "#FFF",
       },
+      collisionFilter: {
+        category: 0x0002,
+      },
     });
     this.maxSpeed = 15;
     this.isTrapped = false;
