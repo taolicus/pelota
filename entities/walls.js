@@ -1,0 +1,22 @@
+import Matter from "matter-js";
+
+export const createWalls = (width, height) => {
+  return [
+    Matter.Bodies.rectangle(width / 2, 0, width, 20, {
+      isStatic: true,
+      render: { fillStyle: "#fff", strokeStyle: "#000" },
+    }),
+    Matter.Bodies.rectangle(width / 2, height, width, 20, {
+      isStatic: true,
+      render: { fillStyle: "#fff", strokeStyle: "#000" },
+    }),
+    Matter.Bodies.rectangle(0, height / 2, 20, height, {
+      isStatic: true,
+      render: { fillStyle: "#fff", strokeStyle: "#000" },
+    }),
+    Matter.Bodies.rectangle(width, height / 2, 20, height, {
+      isStatic: true,
+      render: { fillStyle: "#fff", strokeStyle: "#000" },
+    }),
+  ];
+};

@@ -1,0 +1,13 @@
+{
+  "name": "pelota",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "vite"
+  },
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "matter-js": "^0.20.0",
+    "vite": "^7.1.2"
+  }
+}
