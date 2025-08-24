@@ -3,6 +3,9 @@ import { FSM } from "../core/fsm.js";
 
 export class Jugador {
   constructor(x, y, radius, angle, color) {
+    this.initialX = x;
+    this.initialY = y;
+    this.initialAngle = angle;
     this.speed = 0;
     this.maxSpeed = 8;
     this.acceleration = 0.1;
@@ -122,8 +125,7 @@ export class Jugador {
   }
 
   updateAI() {
-    if (this.fsm) {
-      this.fsm.update();
-    }
+    if (!this.fsm) return;
+    this.fsm.update();
   }
 }

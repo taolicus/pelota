@@ -41,31 +41,44 @@ const centerX = render.options.width / 2;
 const centerY = render.options.height / 2;
 
 const walls = createWalls(render.options.width, render.options.height);
+
 const pelota = new Pelota(centerX, centerY, config.ballRadius);
-const jugador = new Jugador(
-  centerX - 100,
-  centerY,
-  config.playerRadius,
-  0,
-  "#f00"
-);
-const oponente = new Jugador(
-  centerX + 100,
-  centerY,
-  config.playerRadius,
-  Math.PI,
-  "#00f"
-);
-oponente.initAI(pelota);
+
+const redTeam = [
+  new Jugador(centerX - 100, centerY - 50, config.playerRadius, 0, "#f00"),
+  new Jugador(centerX - 100, centerY + 50, config.playerRadius, 0, "#f00"),
+];
+
+const blueTeam = [
+  new Jugador(
+    centerX + 100,
+    centerY - 50,
+    config.playerRadius,
+    Math.PI,
+    "#00f"
+  ),
+  new Jugador(
+    centerX + 100,
+    centerY + 50,
+    config.playerRadius,
+    Math.PI,
+    "#00f"
+  ),
+];
+
+const jugadores = redTeam.concat(blueTeam);
+
+jugadores.forEach((jugador) => {
+  jugador.initAI(pelota);
+});
 
 Matter.Composite.add(engine.world, [
   ...walls,
-  jugador.body,
-  oponente.body,
+  ...jugadores.map((jugador) => jugador.body),
   pelota.body,
 ]);
 
-setupKeyboardControls(engine, jugador);
+// setupKeyboardControls(engine, jugador);
 
 updateScoreDisplay();
 
@@ -83,11 +96,11 @@ Matter.Events.on(engine, "beforeUpdate", () => {
   }
 
   if (!gameState.isGamePaused) {
-    oponente.updateAI();
+    jugadores.forEach((jugador) => jugador.updateAI());
   }
 
   pelota.limitVelocity();
-  // console.log(pelota.body.position);
+
   if (pelota.body.position.x > render.options.width + config.ballRadius) {
     // red team score
     gameState.score.red++;
@@ -115,25 +128,20 @@ function startGoalPause() {
 }
 
 function resetPositions() {
-  // Posiciones iniciales
   const centerX = render.options.width / 2;
   const centerY = render.options.height / 2;
 
-  // Reiniciar pelota
   Matter.Body.setPosition(pelota.body, { x: centerX, y: centerY });
   Matter.Body.setVelocity(pelota.body, { x: 0, y: 0 });
   Matter.Body.setAngularVelocity(pelota.body, 0);
 
-  // Reiniciar jugadores
-  Matter.Body.setPosition(jugador.body, { x: centerX - 100, y: centerY });
-  Matter.Body.setVelocity(jugador.body, { x: 0, y: 0 });
-  Matter.Body.setAngle(jugador.body, 0);
-
-  Matter.Body.setPosition(oponente.body, { x: centerX + 100, y: centerY });
-  Matter.Body.setVelocity(oponente.body, { x: 0, y: 0 });
-  Matter.Body.setAngle(oponente.body, Math.PI);
-
-  // Resetear velocidad acumulada
-  jugador.speed = 0;
-  oponente.speed = 0;
+  jugadores.forEach((jugador) => {
+    Matter.Body.setPosition(jugador.body, {
+      x: jugador.initialX,
+      y: jugador.initialY,
+    });
+    Matter.Body.setVelocity(jugador.body, { x: 0, y: 0 });
+    Matter.Body.setAngle(jugador.body, jugador.initialAngle);
+    jugador.speed = 0;
+  });
 }

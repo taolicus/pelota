@@ -3,12 +3,12 @@ import Matter from "matter-js";
 export const createWalls = (width, height) => {
   return [
     // up
-    Matter.Bodies.rectangle(width / 2, 0, width, 20, {
+    Matter.Bodies.rectangle(width / 2, -40, width, 100, {
       isStatic: true,
       render: { fillStyle: "#fff", strokeStyle: "#000" },
     }),
     // down
-    Matter.Bodies.rectangle(width / 2, height, width, 20, {
+    Matter.Bodies.rectangle(width / 2, height + 40, width, 100, {
       isStatic: true,
       render: { fillStyle: "#fff", strokeStyle: "#000" },
     }),
@@ -20,11 +20,11 @@ export const createWalls = (width, height) => {
         mask: 0x0001,
       },
     }),
-    Matter.Bodies.rectangle(0, 0 + height / 3 / 2, 20, height / 3, {
+    Matter.Bodies.rectangle(-40, 0 + height / 3 / 2, 100, height / 3, {
       isStatic: true,
       render: { fillStyle: "#fff", strokeStyle: "#000" },
     }),
-    Matter.Bodies.rectangle(0, height - height / 3 / 2, 20, height / 3, {
+    Matter.Bodies.rectangle(-40, height - height / 3 / 2, 100, height / 3, {
       isStatic: true,
       render: { fillStyle: "#fff", strokeStyle: "#000" },
     }),
@@ -36,13 +36,19 @@ export const createWalls = (width, height) => {
         mask: 0x0001,
       },
     }),
-    Matter.Bodies.rectangle(width, height / 3 / 2, 20, height / 3, {
+    Matter.Bodies.rectangle(width + 40, height / 3 / 2, 100, height / 3, {
       isStatic: true,
       render: { fillStyle: "#fff", strokeStyle: "#000" },
     }),
-    Matter.Bodies.rectangle(width, height - height / 3 / 2, 20, height / 3, {
-      isStatic: true,
-      render: { fillStyle: "#fff", strokeStyle: "#000" },
-    }),
+    Matter.Bodies.rectangle(
+      width + 40,
+      height - height / 3 / 2,
+      100,
+      height / 3,
+      {
+        isStatic: true,
+        render: { fillStyle: "#fff", strokeStyle: "#000" },
+      }
+    ),
   ];
 };
