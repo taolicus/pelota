@@ -45,21 +45,23 @@ const walls = createWalls(render.options.width, render.options.height);
 const pelota = new Pelota(centerX, centerY, config.ballRadius);
 
 const redTeam = [
-  new Jugador(centerX - 100, centerY - 50, config.playerRadius, 0, "#f00"),
-  new Jugador(centerX - 100, centerY + 50, config.playerRadius, 0, "#f00"),
+  new Jugador(centerX - 100, centerY, config.playerRadius, 0, "#f00"),
+  new Jugador(centerX - 120, centerY - 60, config.playerRadius, 0, "#f00"),
+  new Jugador(centerX - 120, centerY + 60, config.playerRadius, 0, "#f00"),
 ];
 
 const blueTeam = [
+  new Jugador(centerX + 100, centerY, config.playerRadius, Math.PI, "#00f"),
   new Jugador(
-    centerX + 100,
-    centerY - 50,
+    centerX + 120,
+    centerY - 60,
     config.playerRadius,
     Math.PI,
     "#00f"
   ),
   new Jugador(
-    centerX + 100,
-    centerY + 50,
+    centerX + 120,
+    centerY + 60,
     config.playerRadius,
     Math.PI,
     "#00f"
