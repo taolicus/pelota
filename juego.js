@@ -44,27 +44,62 @@ const walls = createWalls(render.options.width, render.options.height);
 
 const pelota = new Pelota(centerX, centerY, config.ballRadius);
 
+// const redTeam = [
+//   new Jugador(
+//     centerX,
+//     centerY - 100,
+//     config.playerRadius,
+//     Math.PI / 2,
+//     "#f00",
+//     "left"
+//   ),
+// ];
+// const blueTeam = [];
+
 const redTeam = [
-  new Jugador(centerX - 100, centerY, config.playerRadius, 0, "#f00"),
-  new Jugador(centerX - 120, centerY - 60, config.playerRadius, 0, "#f00"),
-  new Jugador(centerX - 120, centerY + 60, config.playerRadius, 0, "#f00"),
+  new Jugador(centerX - 100, centerY, config.playerRadius, 0, "#f00", "left"),
+  new Jugador(
+    centerX - 120,
+    centerY - 60,
+    config.playerRadius,
+    0,
+    "#f00",
+    "left"
+  ),
+  new Jugador(
+    centerX - 120,
+    centerY + 60,
+    config.playerRadius,
+    0,
+    "#f00",
+    "left"
+  ),
 ];
 
 const blueTeam = [
-  new Jugador(centerX + 100, centerY, config.playerRadius, Math.PI, "#00f"),
+  new Jugador(
+    centerX + 100,
+    centerY,
+    config.playerRadius,
+    Math.PI,
+    "#00f",
+    "right"
+  ),
   new Jugador(
     centerX + 120,
     centerY - 60,
     config.playerRadius,
     Math.PI,
-    "#00f"
+    "#00f",
+    "right"
   ),
   new Jugador(
     centerX + 120,
     centerY + 60,
     config.playerRadius,
     Math.PI,
-    "#00f"
+    "#00f",
+    "right"
   ),
 ];
 
@@ -98,7 +133,7 @@ Matter.Events.on(engine, "beforeUpdate", () => {
   }
 
   if (!gameState.isGamePaused) {
-    jugadores.forEach((jugador) => jugador.updateAI());
+    jugadores.forEach((jugador) => jugador.update());
   }
 
   pelota.limitVelocity();
