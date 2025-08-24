@@ -23,11 +23,11 @@ export class Jugador {
     const cuerpo = Matter.Bodies.circle(x, y, radius, {
       angle: angle,
       density: 1,
-      frictionAir: 0.01,
       restitution: 0.01,
-      friction: 0.1,
-      frictionStatic: 0.01,
-      inertia: 1000,
+      friction: 0.01,
+      frictionAir: 0.01,
+      frictionStatic: 0,
+      inertia: 100,
       render: {
         fillStyle: color,
       },
@@ -182,7 +182,7 @@ export class Jugador {
       else this.brake();
     });
 
-    this.fsm.addState("get_kick_angle", () => {
+    this.fsm.addState("seek_kick_angle", () => {
       const ballPos = pelota.body.position;
       const goalPos = this.getOpponentGoalPosition();
       const playerPos = this.body.position;
@@ -227,18 +227,18 @@ export class Jugador {
       this.kick(pelota);
     });
 
-    this.fsm.addTransition("chase", "get_kick_angle", () => {
+    this.fsm.addTransition("chase", "seek_kick_angle", () => {
       return (
         distanceBetween(this.body, pelota.body) < 100 &&
         !this.hasGoodKickingAngle(pelota)
       );
     });
 
-    this.fsm.addTransition("get_kick_angle", "chase", () => {
+    this.fsm.addTransition("seek_kick_angle", "chase", () => {
       return distanceBetween(this.body, pelota.body) > 100;
     });
 
-    this.fsm.addTransition("get_kick_angle", "kick", () => {
+    this.fsm.addTransition("seek_kick_angle", "kick", () => {
       return (
         distanceBetween(this.body, pelota.body) < 35 &&
         this.hasGoodKickingAngle(pelota)
